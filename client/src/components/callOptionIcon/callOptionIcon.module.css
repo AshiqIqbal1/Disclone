@@ -1,0 +1,36 @@
+.optionWrapper {
+    width: 56px;
+    height: 56px;
+    background-color: rgb(43, 45, 49);
+    border-radius: 50%;
+    padding: 16px;
+    margin: 0px 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.optionWrapper:hover {
+    background-color: hsl(225 calc(1*6.25%) 12.549% /1);
+}
+
+.optionIcon {
+    width: 24px;
+    height: 24px;
+    color: white;
+}
+
+.phoneEnd {
+    background-color: rgb(218, 55, 60);
+}
+.phoneEnd:hover {
+    background-color: hsl(359.504 calc(1*60.199%) 39.412% /1);
+}
+
+.phoneEnd .optionIcon {
+    width: 20px;
+    height: 20px;
+    transform: rotate(135deg);
+}
+

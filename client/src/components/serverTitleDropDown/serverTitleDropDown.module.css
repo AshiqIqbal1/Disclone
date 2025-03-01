@@ -1,0 +1,48 @@
+.modalWrapper {
+    width: 220px;
+    border-radius: 4px;
+    box-shadow: 0 12px 24px 0 hsl(none 0% 0%/0.24);
+    background-color: oklab(0.181946 -0.000415117 -0.00436524);
+    padding: 6px 8px;
+    position: absolute;
+    top: 56px;
+    left: 10px;
+    z-index: 1001;
+    transition: all ease;
+}
+
+.overlay {
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    left: 0px;
+    backdrop-filter: blur(0px);
+    z-index: 1000;
+}
+
+.optionWrapper {
+    margin: 2px 0px;
+    padding: 6px 8px;
+    height: 32px;
+    border-radius: 2px;
+    cursor: pointer;
+}
+
+.optionWrapper:hover {
+    background-color: oklab(0.57738 0.0140701 -0.208587);
+}
+
+.optionWrapper:hover .optionTitle {
+    color: #FFFFFF;
+}
+
+.optionTitle {
+    flex: 1 1 auto;
+    font-size: 12.5px;
+    font-weight: 500;
+    line-height: 18px;
+    color: oklab(0.723697 0.0200406 -0.130349);
+}

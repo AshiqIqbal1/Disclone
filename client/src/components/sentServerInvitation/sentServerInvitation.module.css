@@ -1,0 +1,39 @@
+.wrapper {
+    width: 432px;
+    height: 110px;
+    padding: 16px;
+    background-color: oklab(0.296709 -0.000735492 -0.00772537);
+}
+
+.captionWrapper {
+    margin-bottom: 12px;
+}
+
+.mainContentWrapper {
+    height: 50px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.serverDetails {
+    display: flex;
+    flex: 1000 0 auto;
+    align-items: center;
+    max-width: 100%;
+    gap: 16px;
+}
+
+.joinBtn {
+    height: 40px;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+    background-color: rgb(36, 128, 69);
+    color: #FFFFFF;
+    border-radius: 3px;
+    flex: 1 0 auto;
+    border: none;
+    cursor: pointer;
+    padding: 2px 16px;
+}

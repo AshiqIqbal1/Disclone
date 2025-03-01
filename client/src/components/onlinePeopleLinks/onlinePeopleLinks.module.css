@@ -1,0 +1,27 @@
+.actionLinks {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: oklab(0.296709 -0.000735492 -0.00772537);
+    color: oklab(0.787067 -0.00258079 -0.0110391);
+    border-radius: 50%;
+    cursor: pointer;
+    margin-left: 8px;
+}
+
+.default:hover {
+    color: oklab(0.89908 -0.00192907 -0.0048306);
+}
+
+.accept:hover {
+    color: green;
+}
+
+.reject:hover {
+    color: oklab(0.637239 0.195259 0.0899358);
+}
+
+
+

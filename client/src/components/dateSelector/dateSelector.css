@@ -1,0 +1,59 @@
+.date-selector-wrapper {
+    display: flex;
+    flex-direction: column-reverse;
+}
+
+.date-selector-options-container {
+    width: 100%;
+    min-height: 214px;
+    border-radius: 3px;
+    border: 1px solid oklab(0.239468 0.000131123 -0.00589392);
+    : rgba(0, 0, 0, 0.15) 0px 4px 2px 0px;
+    overflow: scroll;
+}
+
+.date-selector-input {
+    display: flex;
+}
+
+.selector-options {
+    color: oklab(0.787067 -0.00258079 -0.0110391);
+    background: rgb(43, 45, 49);
+    font-size: 15px;
+    font-weight: 500;
+    padding: 10px;
+    cursor: pointer;
+    user-select: none;
+}
+
+.selector-options:hover {
+    background-color: rgb(54, 56, 60);
+}
+
+.selected-option {
+    color: #fff;
+    background-color: rgb(66, 68, 74);
+    pointer-events: none;
+}
+
+.input-box-date {
+    width: 100%;
+    color: oklab(0.787067 -0.00258079 -0.0110391);
+    padding: 10px;
+    font-size: 15px;
+    font-weight: 500;
+    border: none;
+    background: none;
+    outline: none;
+}
+
+.icon-chevron-container {
+    padding: 8px 8px 8px 0px;
+}
+
+.icon-chevron-down-month {
+    max-width: 12px;
+    color: oklab(0.787067 -0.00258079 -0.0110391);
+    stroke: oklab(0.787067 -0.00258079 -0.0110391);
+    stroke-width: 20px;
+}

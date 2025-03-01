@@ -1,0 +1,42 @@
+.searchBarWrapper {
+    display: flex;
+    width: 100%;
+}
+
+.searchBarInnerWrapper{
+    width: 100%;
+    margin: 16px 20px 8px 30px;
+    background-color: oklab(0.239468 0.000131123 -0.00589392);
+    display: flex;
+    border-radius: 4px;
+    padding: 1px;
+}
+
+.searchBarInput {
+    width: 100%;
+    min-width: 48px;
+    height: 30px;
+    line-height: 32px;
+    flex: 1;
+    background: transparent;
+    border: none;
+    padding: 0 8px;
+    margin: 1px;
+    font-size: 15px;
+    font-weight: 400;
+    color: oklab(0.89908 -0.00192907 -0.0048306);
+}
+
+.searchIconWrapper {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.searchIcon {
+    width: 18px;
+    height: 18px;
+    color: oklab(0.787067 -0.00258079 -0.0110391);
+}

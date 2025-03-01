@@ -1,0 +1,25 @@
+.wrapper {
+    display: flex;
+    flex: 1 1 auto;
+}
+
+.profileIconWrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.profileIcon {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    color: oklab(0.613226 -0.000409693 -0.0157583);
+    margin: 0px 12px 0px 8px;
+}
+
+.rightBar {
+    width: 340px;
+    height: 100%;
+    background-color: oklab(0.260916 0.000628404 -0.0075541);
+    flex-shrink: 0;
+}

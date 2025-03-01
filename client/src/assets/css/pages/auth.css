@@ -1,0 +1,197 @@
+.auth-body {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(132, 132, 132);
+    margin-left: -72px;
+}
+
+.auth-wrapper {
+    width: 480px;
+    padding: 32px;
+    border-radius: 5px;
+    color: oklab(0.89908 -0.00192907 -0.0048306);
+    background-color: oklab(0.321044 -0.000249296 -0.00927344);
+}
+
+.auth-title {
+    color: oklab(0.963876 -0.000228494 -0.00284719);
+    font-size: 24px;
+    font-weight: 600;
+    text-align: center;
+    line-height: 1.25;
+    user-select: none;
+}
+
+.auth-title-caption {
+    color: oklab(0.787067 -0.00258079 -0.0110391);
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 20px;
+    text-align: center;
+}
+
+.auth-form {
+    margin-top: 20px;
+}
+
+.auth-form p {
+    font-size: 11px;
+    margin-top: 8px;
+    color: oklab(0.686636 -0.00407365 -0.0149199);
+    font-weight: 400;
+    user-select: none;
+}
+
+.auth-form p span {
+    color: oklab(0.705515 -0.0795695 -0.144235);
+}
+
+.auth-form p span:hover {
+    border-bottom: 1px solid oklab(0.705515 -0.0795695 -0.144235);
+    cursor: pointer;
+}
+
+.auth-input-box {
+    margin-bottom: 20px;
+}
+
+.auth-input-box-date {
+    margin-bottom: 4px;
+}
+
+.input-label {
+    color: oklab(0.787067 -0.00258079 -0.0110391);
+    display: block;
+    margin-bottom: 8px;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 16px;
+    letter-spacing: .02em;
+}
+
+.input-label span {
+    color: oklab(0.723746 0.150768 0.055049);
+    padding-left: 4px;
+}
+
+.auth-input-box .input-box {
+    height: 40px;
+    color: rgb(219, 222, 225);
+    font-size: 14px;
+    font-weight: 400;
+    background-color: oklab(0.239468 0.000131123 -0.00589392);
+}
+
+.auth-caption-notification {
+    display: flex;
+    align-items: center;
+    margin-top: 8px;
+}
+
+.auth-caption-notification label {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+
+.input-checkbox {
+    display: none;
+}
+
+.custom-checkmark {
+    min-width: 24px;
+    min-height: 24px;
+    border: 1px solid rgb(128, 132, 142);
+    background-color: rgba(0, 0, 0, 0);
+    border-radius: 6px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background-color 0.1s ease, border-color 0.1s ease;
+}
+
+.notification-caption-text {
+    color: oklab(0.686636 -0.00407365 -0.0149199);
+    font-size: 11px;
+    line-height: 16px;
+    padding-left: 8px;
+    user-select: none;
+}
+
+.checked-checkmark {
+    background-color: rgb(88, 101, 242);
+    border-color: rgb(121, 132, 245);
+}
+
+.checked-checkmark-icon {
+    min-width: 18px;
+    min-height: 18px;
+}
+
+.btn {
+    height: 44px;
+    background-color: rgb(88, 101, 242);
+    font-size: 14px;
+    font-weight: 500;
+    color: #FFFFFF;
+    line-height: 24px;
+    margin-top: 20px;
+    transition: 0.1s ease-in;
+}
+
+.btn:hover {
+    background-color: rgb(71, 82, 196);
+}
+
+.btn-link {
+    margin-top: 20px;
+    line-height: 16px;
+    font-size: 14px;
+    color: oklab(0.705515 -0.0795695 -0.144235);
+}
+
+.input-date-of-birth-box {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.input-selector-date {
+    height: 40px;
+    background-color: oklab(0.239468 0.000131123 -0.00589392);
+    border-radius: 3px;
+    margin-bottom: 4px;
+    display: flex;
+}
+
+.month {
+    width: 35%;
+}
+
+.day-and-year {
+    width: 30%;
+}
+
+.forgot-password {
+    font-size: 13px;
+    margin-top: 4px;
+    margin-bottom: 20px;
+    font-weight: 500;
+}
+
+.need-account-container {
+    margin-top: 4px;
+}
+
+.need_account {
+    font-size: 13px;
+    font-weight: 400;
+    color: oklab(0.686636 -0.00407365 -0.0149199);
+}
+
+.register-btn-link {
+    font-size: 13px;
+    font-weight: 500;
+}

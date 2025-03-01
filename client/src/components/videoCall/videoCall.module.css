@@ -1,0 +1,99 @@
+.videoCallWrapper {
+    width: 100%;
+    /* height: 240px; */
+    background-color: oklab(0.181946 -0.000415117 -0.00436524);
+    display: flex;
+    z-index: 2;
+    position: absolute;
+    flex-direction: column;
+}
+
+.voiceCallWrapper {
+    padding: 0 0px 16px;
+}
+
+.videoCallIconWrapper {
+    width: 100%;
+    height: 428.5px;
+    position: absolute;
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding-bottom: 16px;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.videoCallIconWrapper:hover {
+    opacity: 1;
+    box-shadow: 
+        inset 0px -64px 96px rgba(0, 0, 0, 1),
+        inset 0px 64px 96px rgba(0, 0, 0, 1); 
+}
+
+.videoCallTopBar {
+    box-shadow: none;
+}
+
+.callRegionWrapper {
+    width: 100%;
+    height: 13px;
+}
+.profileWrapper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: end;
+    justify-content: center;
+}
+
+.profileIconWrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.profileIconTopbar {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    color: oklab(0.613226 -0.000409693 -0.0157583);
+    margin: 0px 12px 0px 8px;
+}
+
+.callOptionOuterWrapper {
+    width: 100%;
+    min-height: 56px;
+    display: flex;
+    align-items: end;
+}
+
+.callOptionInnerWrapper {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.profile {
+    padding-bottom: 24px;
+}
+
+.profileIcon {   
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+}
+
+.videoWrapper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.video {
+    width: 571.333px;
+    transform: scaleX(-1);
+}

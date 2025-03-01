@@ -1,0 +1,25 @@
+.wrapper {
+    display: flex;
+    flex: 1 1 auto;
+    background-color: oklab(0.321044 -0.000249296 -0.00927344);
+}
+
+.serverProfileIcon{
+    color: oklab(0.613226 -0.000409693 -0.0157583);
+    margin: 0px 8px;
+    width: 22px;
+    height: 22px;
+}
+
+.channelIcon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.serverChannelTitle {
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

@@ -1,0 +1,100 @@
+.allChannelWrapper {
+    padding-top: 12px;
+    padding-right: 8px;
+}
+
+.channelWrapperDivider {
+    height: 1px;
+    background-color: rgba(78, 80, 88, 0.48);
+    margin-top: 11px;
+    margin-left: 8px;
+}
+
+.channelWrapper {
+    height: 34px;
+    padding: 1px 0px;
+    margin-left: 8px;
+}
+
+.channelInnerWrapper {
+    height: 100%;
+    padding: 6px 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    border-radius: 4px;
+}
+
+.channelInnerWrapper:hover {
+    background-color: rgba(78, 80, 88, 0.3);
+}
+
+.channelName {
+    color: oklab(0.686636 -0.00407365 -0.0149199);
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: 500;
+    flex: 1 1 auto;
+}
+
+.channelName:hover {
+    color: oklab(0.686636 -0.00407365 -0.0149199);
+}
+
+.channelIcon {
+    width: 18px;
+    height: 18px;
+    margin-right: 6px;
+    color: oklab(0.613226 -0.000409693 -0.0157583);
+}
+
+.titleWrapper {
+    padding: 12px 16px;
+    cursor: pointer;
+    transition: background-color .1s linear;
+}
+
+.titleWrapper:hover {
+    background-color: rgba(68, 80, 88, 0.3);
+}
+
+.titleText {
+    margin-right: auto;
+    color: oklab(0.89908 -0.00192907 -0.0048306);
+    font-size: 14.5px;
+    font-weight: 600;
+    line-height: 20px;
+}
+
+.chevronIcon {
+    max-width: 12px;
+    min-height: 12px;
+    color: oklab(0.963876 -0.000228494 -0.00284719);
+    opacity: 0.8;
+    stroke: oklab(0.963876 -0.000228494 -0.00284719);
+    stroke-width: 45px;
+    stroke-opacity: 0.8;
+}
+
+.selectedChannel {
+    background-color: rgba(78, 80, 88, 0.6);
+}
+
+.selectedChannel:hover {
+    background-color: rgba(78, 80, 88, 0.6);
+}
+
+.selectedChannel .channelName{
+    color: oklab(0.999994 0.0000455678 0.0000200868);
+}
+
+.sidebarItemListWrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    flex: 1 1 auto;
+    min-height: 0;
+    position: relative;
+}
+

@@ -1,0 +1,41 @@
+.invitationWrapper {
+    width: 100%;
+    height: 200px;
+    padding: 8px 8px 0px 12px;
+}
+
+.invitationFriendWrapper {
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 7px 8px 7px 8px;
+    border-radius: 3px;
+}
+
+.invitationFriendWrapper:hover {
+    background-color: rgba(78, 80, 88, 0.3);
+}
+
+.inviteFriendText {
+    font-weight: 400;
+    font-size: 14.5px;
+    line-height: 16px;
+    color: oklab(0.787067 -0.00258079 -0.0110391);
+}
+
+.inviteFriendBtn {
+    width: 72px;
+    height: 32px;
+    padding: 2px 16px;
+    border-radius: 3px;
+    border: 1px solid rgb(35, 165, 90);
+    color: #FFFFFF;
+    background: none;
+    cursor: pointer;
+}
+
+.inviteFriendBtn:hover {
+    background-color: rgb(26, 99, 52);
+    border: 1px solid rgb(26, 99, 52);
+}

@@ -1,0 +1,50 @@
+.messageWrapper {
+    display: flex;
+    flex-direction: column;
+    margin-top: 12px;
+    padding: 2px 48px 2px 72px;
+    /* height: 48px; */
+}
+
+.noHeaderMessageWrapper {
+    padding: 2px 48px 2px 72px;
+    overflow-wrap: anywhere;
+    white-space: break-spaces;
+}
+
+.profilePic {
+    position: absolute;
+    left: 16px;
+    margin-top: 2px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.profileName {
+    height: 22px;
+}
+
+.messageTimeSent {
+    height: 20px;
+    color: oklab(0.686636 -0.00407365 -0.0149199);
+    font-size: 11px;
+    font-weight: 500;
+    margin-left: 4px;
+}
+
+.messageName {
+    color: oklab(0.963876 -0.000228494 -0.00284719);
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 22px;
+    margin-right: 4px;
+}
+
+.messageContent {
+    font-size: 15px;
+    color: oklab(0.89908 -0.00192907 -0.0048306);
+    line-height: 22px;
+    font-weight: 400;
+}

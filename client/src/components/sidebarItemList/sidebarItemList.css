@@ -1,0 +1,78 @@
+.sidebar-item {
+    width: 100%;
+    height: 48px;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 8px;
+    cursor: pointer;
+    position: relative;
+}
+
+.direct-messages-item {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background-color: oklab(0.321044 -0.000249296 -0.00927344);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.15s ease-in;
+}
+
+.discord-messages-icon {
+    color: oklab(0.89908 -0.00192907 -0.0048306);
+    width: 30px;
+    height: 30px;
+}
+
+.selected-item {
+    background-color: rgb(88, 101, 242);
+    border-radius: 16px;
+}
+
+.selected-item .discord-messages-icon {
+    color: #fff;
+}
+
+.sidebar-selected-bar {
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+}
+
+.bar {
+    width: 0px;
+    height: 0px;
+    border-radius: 0px 4px 4px 0px;
+    background-color: oklab(0.963876 -0.000228494 -0.00284719);
+    margin-left: -4px;
+    opacity: 0;
+    transition: all 0.15s ease-in-out;
+}
+
+.hovering-bar {
+    opacity: 1;
+    width: 8px;
+    height: 20px;
+}
+
+.selected-bar {
+    opacity: 1;
+    width: 8px;
+    height: 40px;
+}
+
+.iconTitle {
+    color: oklab(0.89908 -0.00192907 -0.0048306);
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 21px;
+}
+
+.selected-item .iconTitle {
+    color: #FFFFFF;
+}

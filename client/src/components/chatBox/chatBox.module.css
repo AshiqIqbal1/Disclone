@@ -1,0 +1,102 @@
+.mainContentWrapper {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+}
+
+.messagesWrapper {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+.sendMessageWrapper {
+    width: 100%;
+    padding: 0px 16px;
+    flex-shrink: 0;
+}
+
+.sendMessageInnerWrapper {
+    width: 100%;
+    background-color: oklab(0.348793 0.000223339 -0.0107435);
+    border-radius: 8px;
+    margin: 24px 0px;
+    display: flex;
+}
+
+.sendMessageInput {
+    width: 100%;
+    min-height: 44px;
+    max-height: 428.5px;
+    color: oklab(0.89908 -0.00192907 -0.0048306);
+    font-size: 15px;
+    outline: none;
+    border: none;
+    overflow-wrap: anywhere;
+    white-space: break-spaces;
+    padding: 11px 10px 11px 0px;
+    overflow: auto;
+}
+
+.dateSeperator {
+    height: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-top: 1px solid oklab(0.432341 0.00109924 -0.0133243 / 0.48);
+    margin: 24px 14px 0px 8px;
+    pointer-events: none;
+    box-sizing: border-box;
+}
+
+.dateSeperatorContent {
+    display: block;
+    flex: 0 0 auto;
+    padding: 2px 4px;
+    color: oklab(0.686636 -0.00407365 -0.0149199);
+    line-height: 13px;
+    font-size: 12px;
+    margin-top: -1px;
+    font-weight: 600;
+    border-radius: 8px;
+    user-select: none;
+}
+
+.welcomeMessageWrapper {
+    margin: 16px;
+    display: flex;
+    flex-direction: column;
+}
+
+.hastagWrapper {
+    width: 68px;
+    height: 68px;
+    background-color: oklab(0.383582 0.000674129 -0.0121212);
+    border-radius: 50%;
+    margin-top: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.hashtagIcon { 
+    width: 42px;
+    height: 42px;
+    color: #FFFFFF;
+}
+
+.welcomeTitle {
+    color: oklab(0.89908 -0.00192907 -0.0048306);
+    font-size: 27px;
+    font-weight: 700;
+    line-height: 40px;
+    margin: 8px 0px;
+}
+
+.welcomeCaption {
+    color: oklab(0.787067 -0.00258079 -0.0110391);
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 20px;
+}

@@ -1,0 +1,119 @@
+.overlay {
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    left: 0px;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(0px);
+    z-index: 1000;
+}
+
+.modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 440px;
+    height: 404px;
+    border-radius: 4px;
+    background-color: oklab(0.321044 -0.000249296 -0.00927344);
+    display: flex;
+    flex-direction: column;
+    z-index: 1001;
+}
+
+.modalTitleWrapper {
+    padding: 24px 24px 0px;
+}
+
+.modalTitle {
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 30px;
+    text-align: center;
+    color: oklab(0.89908 -0.00192907 -0.0048306);
+}
+
+.modalCaption {
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 20px;
+    margin-top: 8px;
+    text-align: center;
+    color: oklab(0.787067 -0.00258079 -0.0110391);
+    overflow-wrap: anywhere;
+    white-space: break-spaces;
+}
+
+.modalMainContent {
+    padding: 0px 16px;
+    margin: 16px 0px;
+}
+
+.termsAndCondition {
+    color: oklab(0.686636 -0.00407365 -0.0149199);
+    font-size: 11px;
+    font-weight: 400;
+    line-height: 16px;
+    margin-top: 8px;
+    padding-bottom: 4px;
+}
+
+.termsAndCondition strong {
+    color: oklab(0.705515 -0.0795695 -0.144235);
+    cursor: pointer;
+}
+
+.termsAndCondition strong:hover {
+    text-decoration: underline;
+    text-decoration-color: oklab(0.705515 -0.0795695 -0.144235);
+}
+
+.btnWrapper {
+    width: 100%;
+    padding: 16px;
+    background-color: oklab(0.296709 -0.000735492 -0.00772537);
+    display: flex;
+    justify-content: space-between;
+}
+
+.backBtn {
+    height: 38px;
+    padding: 0px 4px;
+    color: oklab(0.89908 -0.00192907 -0.0048306);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 16px;
+    background: none;
+    outline: none;
+    border: none;
+}
+
+.createBtn {
+    width: 96px;
+    height: 38px;
+    background-color: rgb(88, 101, 242);
+    border: none;
+    border-radius: 3px;
+    padding: 2px 16px;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.disableButton {
+    opacity: 0.5;
+    cursor: not-allowed;
+}

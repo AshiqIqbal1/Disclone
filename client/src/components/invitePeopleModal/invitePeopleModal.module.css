@@ -1,0 +1,94 @@
+.modalWrapper {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 440px;
+    height: 453px;
+    border-radius: 4px;
+    background-color: oklab(0.321044 -0.000249296 -0.00927344);
+    display: flex;
+    flex-direction: column;
+    z-index: 1001
+}
+
+.modalHeaderWrapper {
+    padding: 16px;
+    box-shadow: 0 1px 0 0 hsl(220 calc(1*8.108%) 7.255% /.3), 
+        0 1px 2px 0 hsl(220 calc(1*8.108%) 7.255% /.3);
+    border-radius: 4px 4px 0 0;
+    transition: box-shadow .1s ease-out;
+    display: flex;
+    flex-direction: column;
+}
+
+.modalTitle {
+    font-size: 14.5px;
+    font-weight: 600;
+    line-height: 20px;
+    color: oklab(0.963876 -0.000228494 -0.00284719);
+    margin: 0px 28px 4px 0px;
+    user-select: none;
+}
+
+.modalGeneral {
+    display: flex;
+    align-items: center;
+}
+
+.modalGeneralText {
+    color: oklab(0.787067 -0.00258079 -0.0110391);
+    font-size: 14.5px;
+    font-weight: 400;
+    line-height: 24px;
+    user-select: none;
+}
+
+.modalGeneralIcon {
+    margin: 4px 8px 0px 0px;
+}
+
+.searchBarWrapper {
+    margin: 12px 0px 8px 0px;
+    padding: 4px;
+    background-color: oklab(0.239468 0.000131123 -0.00589392);
+    border-radius: 4px;
+    display: flex;
+    height: 32px;
+}
+
+.searchBarInput {
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 20px;
+    height: 20px;
+    padding: 0 4px;
+    margin: 1px;
+    box-sizing: border-box;
+    background: transparent;
+    border: none;
+    flex: 1;
+    min-width: 48px;
+    appearance: none;
+    color: oklab(0.89908 -0.00192907 -0.0048306);
+}
+
+.searchBarInput::placeholder {
+    font-weight: 400;
+    font-size: 13px;
+}
+
+.searchBarIconWrapper {
+    width: 22px;
+    height: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.searchBarIcon {
+    color: oklab(0.787067 -0.00258079 -0.0110391);
+    width: 14px;
+    height: 14px;
+}
+

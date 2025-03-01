@@ -1,0 +1,46 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "gg sans", "Noto Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.input-box {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    outline: none;
+}
+
+.btn {
+    width: 100%;
+    padding: 2px 16px;
+    cursor: pointer;
+    border: none;
+    border-radius: 3px;
+}
+
+.btn-link {
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+
+.btn-link:hover {
+    border-bottom: 1px solid;
+}
+
+.margin-bottom-8px {
+    margin-bottom: 8px;
+}
+
+.reset-margin {
+    margin: 0px;
+}
+
+input {
+    outline: none;
+}

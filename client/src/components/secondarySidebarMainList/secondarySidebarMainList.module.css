@@ -1,0 +1,37 @@
+.sidebarMainList {
+    width: 100%;
+    height: 42px;
+    padding: 0px 8px;
+    color: oklab(0.686636 -0.00407365 -0.0149199);
+    background-color: oklab(0.296709 -0.000735492 -0.00772537);
+    font-weight: 500;
+    font-size: 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+
+.sidebarMainList:hover {
+    background-color: oklab(0.432341 0.00109924 -0.0133243 / 0.3);
+    color: oklab(0.999994 0.0000455678 0.0000200868);
+}
+
+.sidebarMainList:active {
+    background-color: oklab(0.432341 0.00109924 -0.0133243 / 0.6);
+}
+
+.profileIcon {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    margin-right: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.profileFontIcon {
+    width: 24px;
+    height: 24px;
+}

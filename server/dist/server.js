@@ -26,6 +26,9 @@ const changeUserStatus = async (userid, newStatus) => {
     await userOnline.save();
     userOnline.friends.forEach(async (friend) => io.to(friend.id.toString()).emit("updateFriendList", await getFriends(friend.id.toString())));
 };
+app.get("/", (req, res) => {
+    res.status(201).json({ message: "Hello, backend is your working!" });
+});
 io.on("connection", async (socket) => {
     const token = socket.handshake.auth.token;
     if (!token) {
@@ -386,8 +389,8 @@ app.post("/friendJoinServer", authenticateToken, async (req, res) => {
 });
 connectDB()
     .then(() => {
-    server.listen(5001, () => {
-        console.log(`Listening to Port 5001`);
+    server.listen(3000, () => {
+        console.log(`Listening to Port 3000`);
     });
 })
     .catch(console.log);

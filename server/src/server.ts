@@ -398,8 +398,8 @@ app.post("/friendJoinServer", authenticateToken, async (req: AuthenticatedReques
 
 connectDB()
     .then(() => {
-        server.listen(5001, () => {
-            console.log(`Listening to Port 5001`)
+        server.listen(3000, () => {
+            console.log(`Listening to Port 3000`)
         })
     })
     .catch(console.log)

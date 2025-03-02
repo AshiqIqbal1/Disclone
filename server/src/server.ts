@@ -34,6 +34,10 @@ const changeUserStatus = async (userid: string, newStatus: string) => {
     );
 }
 
+app.get("/", (req: Request, res: Response) => {
+    res.status(201).json({ message: "Hello, backend is your working!" });
+});
+
 io.on("connection", async (socket) => {
     const token = socket.handshake.auth.token;
 
@@ -81,10 +85,6 @@ io.on("connection", async (socket) => {
         console.log("Invalid token. Disconnecting...");
         socket.disconnect();
     }
-});
-
-app.get("/", (req, res) => {
-    res.status(201).send("Hello, Backend is working!");
 });
 
 app.post("/register", async (req: Request, res: Response) => {

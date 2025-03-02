@@ -83,6 +83,10 @@ io.on("connection", async (socket) => {
     }
 });
 
+app.get("/", (req, res) => {
+    res.send("Hello, Backend is working!");
+});
+
 app.post("/register", async (req: Request, res: Response) => {
     try {
         const { email, displayName, username, password, day, month, year } = req.body;

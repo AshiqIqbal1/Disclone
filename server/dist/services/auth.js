@@ -1,5 +1,5 @@
 import User from "../models/user.js";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import { generateToken } from "../utils/jwtUtils.js";
 import { verifyToken } from "../utils/verifyToken.js";
 export async function registerUser(email, displayName, username, password, dateOfBirth) {

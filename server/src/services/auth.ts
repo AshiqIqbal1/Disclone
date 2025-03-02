@@ -1,5 +1,5 @@
 import User, { DateOfBirth } from "../models/user.js"
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import { generateToken } from "../utils/jwtUtils.js";
 import { verifyToken } from "../utils/verifyToken.js";
 import { JwtPayload } from "jsonwebtoken";

@@ -84,7 +84,7 @@ io.on("connection", async (socket) => {
 });
 
 app.get("/", (req, res) => {
-    res.send("Hello, Backend is working!");
+    res.status(201).send("Hello, Backend is working!");
 });
 
 app.post("/register", async (req: Request, res: Response) => {

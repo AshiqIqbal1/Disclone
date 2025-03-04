@@ -37,7 +37,7 @@ export default function VideoCall(
             setPeerConnection(pc);
 
             try {
-                const stream = await navigator.mediaDevices.getUserMedia({ video: video, audio: false });
+                const stream = await navigator.mediaDevices.getUserMedia({ video: video, audio: true });
                 setMediaStream(stream);
 
                 if (localVideoRef.current) {

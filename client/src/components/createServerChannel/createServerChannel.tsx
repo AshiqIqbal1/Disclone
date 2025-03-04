@@ -1,6 +1,6 @@
 import { useState } from "react";
 import modalStyles from "../createServerModal/createServerModal.module.css";
-import classes from "./CreateServerChannel.module.css";
+import classes from "./createServerChannel.module.css";
 
 export default function CreateServerChannel(
     { serverid, open, onClose } : {serverid: string, open: boolean, onClose: () => void}

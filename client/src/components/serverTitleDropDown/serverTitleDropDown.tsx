@@ -1,6 +1,14 @@
 import classes from "./serverTitleDropDown.module.css";
 
-export default function ServerTitleDropDown({ open, onClose, activateInvite, activateChannelCreate }) {
+export default function ServerTitleDropDown(
+    { open, onClose, activateInvite, activateChannelCreate } :
+    { 
+        open: boolean, 
+        onClose: () => void, 
+        activateInvite: () => void, 
+        activateChannelCreate: () => void
+    }
+) {
 
     const handleInvitation = () => {
         activateInvite();

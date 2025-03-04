@@ -2,7 +2,9 @@ import { useState } from "react";
 import modalStyles from "../createServerModal/createServerModal.module.css";
 import classes from "./CreateServerChannel.module.css";
 
-export default function CreateServerChannel({ serverid, open, onClose }) {
+export default function CreateServerChannel(
+    { serverid, open, onClose } : {serverid: string, open: boolean, onClose: () => void}
+) {
 
     const [channelName, setChannelName] = useState("");
 
@@ -13,7 +15,7 @@ export default function CreateServerChannel({ serverid, open, onClose }) {
         
         event.preventDefault();
         try {
-            const response = await fetch("http://localhost:5001/createChannel", {
+            const response = await fetch("https://discloned.up.railway.app/createChannel", {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

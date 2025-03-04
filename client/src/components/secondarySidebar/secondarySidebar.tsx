@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import SecondarySidebarMainList from "../secondarySidebarMainList/secondarySidebarMainList";
 import classes from "./secondarySidebar.module.css"
 import { faEnvelope, faRocket, faShoppingCart, faUserGroup } from "@fortawesome/free-solid-svg-icons";
-import { profileInfo } from "../directMessageRightBar/directMessageRightBar";
 import UserInfo from "../userInfo/userInfo";
 
 export interface directMessageList {
@@ -14,39 +13,10 @@ export interface directMessageList {
 
 export default function SecondarySidebar() {
     const [directMessage, setDirectMessage] = useState<directMessageList[]>([]);
-    const [profile, setProfile] = useState<profileInfo>({
-        username: "",
-        displayName: "",
-        profilePic: "",
-        status: "string",
-        timeCreated: new Date
-    });
-
-    const getUserInfo = async () => {
-        try {
-            const response = await fetch("http://localhost:5001/user/info", {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': "Bearer " + localStorage.getItem("Authorization")
-                }
-            });
-            
-            if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(`${errorData.message} Status: ${response.status}`);
-            }
-            
-            const output = await response.json();
-            setProfile(output.profile);
-        } catch (error) {
-            console.error(error);
-        }
-    };
 
     const getDirectMessageList = async () => {
         try {
-            const response = await fetch("http://localhost:5001/directMessageList", {
+            const response = await fetch("https://discloned.up.railway.app/directMessageList", {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -69,7 +39,6 @@ export default function SecondarySidebar() {
 
     useEffect(() => {
         getDirectMessageList();
-        getUserInfo();
     }, []);
 
     return (

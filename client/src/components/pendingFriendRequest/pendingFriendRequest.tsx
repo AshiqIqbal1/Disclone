@@ -12,6 +12,7 @@ export default function PendingFriendRequest() {
     const socket = useSocket();
     const [sentRequests, setSentRequests] = useState<Friend[]>([]);
     const [receivedRequests, setReceivedRequests] = useState<Friend[]>([]);
+    const [searched, setSearched] = useState<Friend[]>([]);
 
     const handleStoring = (data: Friend[]) => {
         setSentRequests(
@@ -33,9 +34,16 @@ export default function PendingFriendRequest() {
         );
     }
 
+    const handleSearch = (search: string) => {
+        const friends = sentRequests.concat(receivedRequests);
+        setSearched(friends.filter((friend) => 
+            friend.username.toLowerCase().includes(search.toLowerCase())
+        ));
+    }
+
     const getFriendRequestList = async () => {
         try {
-            const response = await fetch("http://localhost:5001/friendList", {
+            const response = await fetch("https://discloned.up.railway.app/friendList", {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -68,7 +76,7 @@ export default function PendingFriendRequest() {
 
     const acceptFriendRequest = async (friendid: Types.ObjectId) => {
         try {
-            const response = await fetch("http://localhost:5001/acceptFriendRequest", {
+            const response = await fetch("https://discloned.up.railway.app/acceptFriendRequest", {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -92,11 +100,12 @@ export default function PendingFriendRequest() {
     return (
         (
             sentRequests.length > 0 ||
-            receivedRequests.length > 0
+            receivedRequests.length > 0 ||
+            searched.length > 0
         ) ? 
         (
             <div>
-                <FriendSearchBar/>
+                <FriendSearchBar search={() => handleSearch}/>
                 {
                     receivedRequests.length > 0 ? 
                     (

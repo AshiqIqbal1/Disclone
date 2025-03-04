@@ -3,8 +3,12 @@ import { useEffect, useRef, useState } from "react";
 import { useSocket } from "../../providers/socketProvider";
 import CallOptionIcon from "../callOptionIcon/callOptionIcon";
 import { faDisplay, faMicrophone, faPhone, faVideoSlash } from "@fortawesome/free-solid-svg-icons";
+import { profileInfo } from "../directMessageRightBar/directMessageRightBar";
 
-export default function VideoCall({ profile, video, onClose }) {
+export default function VideoCall(
+    { profile, video, onClose } :
+    { profile: profileInfo, video: boolean, onClose: () => void }
+) {
     const localVideoRef = useRef<HTMLVideoElement | null>(null);
     const remoteVideoRef = useRef<HTMLVideoElement | null>(null);
     const [peerConnection, setPeerConnection] = useState<RTCPeerConnection | null>(null);
@@ -33,7 +37,7 @@ export default function VideoCall({ profile, video, onClose }) {
             setPeerConnection(pc);
 
             try {
-                const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
+                const stream = await navigator.mediaDevices.getUserMedia({ video: video, audio: false });
                 setMediaStream(stream);
 
                 if (localVideoRef.current) {

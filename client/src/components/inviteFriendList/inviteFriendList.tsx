@@ -1,12 +1,15 @@
 import { useParams } from "react-router-dom";
 import classes from "./inviteFriendList.module.css";
+import { Friend } from "../allFriendList/allFriendList";
 
-export default function InviteFriendList({ friend, serverName }) {
+export default function InviteFriendList(
+    { friend, serverName } : {friend: Friend, serverName: string}
+) {
     const { serverid } = useParams();
 
     const handleSendMessage = async () => {
         try {
-            const response = await fetch(`http://localhost:5001/serverInviteFriend`, {
+            const response = await fetch(`https://discloned.up.railway.app/serverInviteFriend`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

@@ -8,7 +8,7 @@
     min-height: 214px;
     border-radius: 3px;
     border: 1px solid oklab(0.239468 0.000131123 -0.00589392);
-    : rgba(0, 0, 0, 0.15) 0px 4px 2px 0px;
+    box-shadow: rgba(0, 0, 0, 0.15) 0px 4px 2px 0px;
     overflow: scroll;
 }
 

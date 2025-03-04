@@ -23,7 +23,7 @@ export const Sidebar = () => {
 
      const getServerList = async () => {
         try {
-            const response = await fetch("http://localhost:5001/serverList", {
+            const response = await fetch("https://discloned.up.railway.app/serverList", {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',

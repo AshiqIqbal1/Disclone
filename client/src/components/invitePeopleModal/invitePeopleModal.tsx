@@ -7,7 +7,10 @@ import { Friend } from "../allFriendList/allFriendList";
 import { useEffect, useState } from "react";
 import InviteFriendList from "../inviteFriendList/inviteFriendList";
 
-export default function InvitePeopleModal({ open, onCloseInvite, serverName }) {
+export default function InvitePeopleModal(
+    { open, onCloseInvite, serverName } : 
+    {open: boolean, onCloseInvite: () => void, serverName: string}
+) {
     if (!open) return null;
     const portalRoot = document.getElementById("portal");
     if (!portalRoot) return null;
@@ -24,7 +27,7 @@ export default function InvitePeopleModal({ open, onCloseInvite, serverName }) {
 
     const getFriendList = async () => {
         try {
-            const response = await fetch("http://localhost:5001/friendList", {
+            const response = await fetch("https://discloned.up.railway.app/friendList", {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',

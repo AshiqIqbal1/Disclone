@@ -10,7 +10,7 @@ export interface profileInfo {
     timeCreated: Date 
 };
 
-export default function DirectMessageRightBar({ getProfile }) {
+export default function DirectMessageRightBar({ getProfile }: { getProfile: (arg0: profileInfo) => void}) {
 
     const { recipient } = useParams();
     const [profile, setProfile] = useState<profileInfo>({
@@ -29,7 +29,7 @@ export default function DirectMessageRightBar({ getProfile }) {
 
     const getProfileInformation = async () => {
         try {
-            const response = await fetch(`http://localhost:5001/profile/${recipient}`, {
+            const response = await fetch(`https://discloned.up.railway.app/profile/${recipient}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',

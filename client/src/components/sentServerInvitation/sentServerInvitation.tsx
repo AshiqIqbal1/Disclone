@@ -1,9 +1,11 @@
 import classes from "./sentServerInvitation.module.css";
 
-export default function SentServerInvitation({ caption, content }) {
+export default function SentServerInvitation(
+    { caption, content } : { caption: string, content: any }
+) {
     const handleJoiningServer = async () => {
         try {
-            const response = await fetch(`http://localhost:5001/friendJoinServer`, {
+            const response = await fetch(`https://discloned.up.railway.app/friendJoinServer`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

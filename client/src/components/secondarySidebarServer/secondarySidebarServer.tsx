@@ -107,7 +107,7 @@ export default function SecondarySidebarServer({ server } : {server: Server}) {
                 </nav>
                 <UserInfo />
             </div>
-            <CreateServerChannel serverid={server._id} open={isOpenCreateChannel} onClose={() => setIsOpenCreateChannel(false)}/>
+            <CreateServerChannel serverid={server._id.toString()} open={isOpenCreateChannel} onClose={() => setIsOpenCreateChannel(false)}/>
             <ServerTitleDropDown 
                 open={serverTitleDropDownIsOpen} 
                 onClose={() => setServerTitleDropDownIsOpen(false)}

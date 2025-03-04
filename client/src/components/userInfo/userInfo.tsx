@@ -13,7 +13,7 @@ export default function UserInfo() {
 
     const getUserInfo = async () => {
         try {
-            const response = await fetch("http://localhost:5001/user/info", {
+            const response = await fetch("https://discloned.up.railway.app/user/info", {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',

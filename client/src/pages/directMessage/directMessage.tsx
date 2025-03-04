@@ -40,7 +40,7 @@ export default function DirectMessage() {
 
     const getDirectMessages = async () => {
         try {
-            const response = await fetch(`http://localhost:5001/directMessage/${recipient}`, {
+            const response = await fetch(`https://discloned.up.railway.app/directMessage/${recipient}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -64,7 +64,7 @@ export default function DirectMessage() {
 
     const handleSendMessage = async (content: string) => {
         try {
-            const response = await fetch(`http://localhost:5001/sendMessage`, {
+            const response = await fetch(`https://discloned.up.railway.app/sendMessage`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

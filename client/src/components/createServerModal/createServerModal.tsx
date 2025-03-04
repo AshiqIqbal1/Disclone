@@ -2,7 +2,9 @@ import ReactDOM from "react-dom";
 import classes from "./createServerModal.module.css";
 import { useState } from "react";
 
-export default function CreateServerModal({ open, onClose }) {
+export default function CreateServerModal(
+    { open, onClose }: {open: boolean, onClose: () => void}
+) {
     if (!open) return null
     const portalRoot = document.getElementById("portal");
     if (!portalRoot) return null;
@@ -12,7 +14,7 @@ export default function CreateServerModal({ open, onClose }) {
     const handleCreateServer = async (event: React.MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
         try {
-            const response = await fetch("http://localhost:5001/createServer", {
+            const response = await fetch("https://discloned.up.railway.app/createServer", {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -33,7 +35,7 @@ export default function CreateServerModal({ open, onClose }) {
         }
     };
 
-    const handleInput = (e) => {
+    const handleInput = (e: { target: { value: any; }; }) => {
         let newName = (e.target.value).toLowerCase();
         setServerName(newName);
     }

@@ -86,7 +86,7 @@ export default function Register() {
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         try {
-            const response = await fetch("http://localhost:5001/register", {
+            const response = await fetch("https://discloned.up.railway.app/register", {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

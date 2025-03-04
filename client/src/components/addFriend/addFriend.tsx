@@ -16,7 +16,7 @@ export default function AddFriend() {
     const sendFriendRequest = async (event: React.MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
         try {
-            const response = await fetch("http://localhost:5001/friendRequest", {
+            const response = await fetch("https://discloned.up.railway.app/friendRequest", {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

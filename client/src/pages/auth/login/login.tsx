@@ -19,7 +19,7 @@ export default function Login() {
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         try {
-            const response = await fetch("http://localhost:5001/login", {
+            const response = await fetch("https://discloned.up.railway.app/login", {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

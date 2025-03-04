@@ -43,7 +43,7 @@ export default function Servers() {
 
     const getServerInformation = async () => {
         try {
-            const response = await fetch(`http://localhost:5001/serverInfo/${serverid}`, {
+            const response = await fetch(`https://discloned.up.railway.app/serverInfo/${serverid}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -64,7 +64,7 @@ export default function Servers() {
 
     const getChannelInformation = async () => {
         try {
-            const response = await fetch(`http://localhost:5001/channelInfo/${serverid}/${channelid}`, {
+            const response = await fetch(`https://discloned.up.railway.app/channelInfo/${serverid}/${channelid}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -88,7 +88,7 @@ export default function Servers() {
 
     const handleSendMessage = async (content: string) => {
         try {
-            const response = await fetch(`http://localhost:5001/channels/sendMessage`, {
+            const response = await fetch(`https://discloned.up.railway.app/channels/sendMessage`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

@@ -29,7 +29,7 @@ export default function DirectMessageRightBar({ getProfile }: { getProfile: (arg
 
     const getProfileInformation = async () => {
         try {
-            const response = await fetch(`http://localhost:3000/profile/${recipient}`, {
+            const response = await fetch(`https://discloned.up.railway.app/profile/${recipient}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',

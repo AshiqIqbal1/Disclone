@@ -40,7 +40,7 @@ export default function DirectMessage() {
 
     const getDirectMessages = async () => {
         try {
-            const response = await fetch(`https://discloned.up.railway.app/directMessage/${recipient}`, {
+            const response = await fetch(`http://localhost:3000/directMessage/${recipient}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -64,7 +64,7 @@ export default function DirectMessage() {
 
     const handleSendMessage = async (content: string) => {
         try {
-            const response = await fetch(`https://discloned.up.railway.app/sendMessage`, {
+            const response = await fetch(`http://localhost:3000/sendMessage`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -103,30 +103,25 @@ export default function DirectMessage() {
         <div className={classes.wrapper}>
             <SecondarySidebar />
             <main className="main-wrapper">
-                {
-                    onVoiceCall ? (
-                        <VideoCall profile={profile} video={false} onClose={() => setOnVoiceCall(false)}/>
-                    ) : (
-                        <div className="main-topbar">
-                            <div className="main-topbar-profile-info">
-                                <div className={classes.profileIconWrapper}>
-                                    <img className={classes.profileIcon} src={profile.profilePic} alt="" />
-                                </div>
-                                <div className="friends-title">
-                                    {profile.displayName}
-                                </div>
-                            </div>
-                            <div className="main-topbar-profile-info">
-                                <div 
-                                    onClick={() => setOnVoiceCall(true)}
-                                    className="main-topbar-icon-wrapper"
-                                >
-                                    <FontAwesomeIcon className="main-topbar-icon" icon={faPhoneVolume}/>
-                                </div>
-                            </div>
+                <VideoCall onCall={onVoiceCall} profile={profile} video={true} onClose={() => setOnVoiceCall(false)}/>
+                <div className="main-topbar">
+                    <div className="main-topbar-profile-info">
+                        <div className={classes.profileIconWrapper}>
+                            <img className={classes.profileIcon} src={profile.profilePic} alt="" />
                         </div>
-                    )
-                }
+                        <div className="friends-title">
+                            {profile.displayName}
+                        </div>
+                    </div>
+                    <div className="main-topbar-profile-info">
+                        <div 
+                            onClick={() => setOnVoiceCall(true)}
+                            className="main-topbar-icon-wrapper"
+                        >
+                            <FontAwesomeIcon className="main-topbar-icon" icon={faPhoneVolume}/>
+                        </div>
+                    </div>
+                </div>
                 <div className="content-wrapper">
                     <ChatBox channel="" send={handleSendMessage} messages={messages}/>
                     {

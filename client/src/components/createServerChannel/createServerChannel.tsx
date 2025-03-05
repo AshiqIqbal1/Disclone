@@ -15,7 +15,7 @@ export default function CreateServerChannel(
         
         event.preventDefault();
         try {
-            const response = await fetch("https://discloned.up.railway.app/createChannel", {
+            const response = await fetch("http://localhost:3000/createChannel", {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

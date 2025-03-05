@@ -16,7 +16,7 @@ export default function SecondarySidebar() {
 
     const getDirectMessageList = async () => {
         try {
-            const response = await fetch("https://discloned.up.railway.app/directMessageList", {
+            const response = await fetch("http://localhost:3000/directMessageList", {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',

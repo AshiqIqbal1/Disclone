@@ -9,7 +9,7 @@ export default function InviteFriendList(
 
     const handleSendMessage = async () => {
         try {
-            const response = await fetch(`https://discloned.up.railway.app/serverInviteFriend`, {
+            const response = await fetch(`http://localhost:3000/serverInviteFriend`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

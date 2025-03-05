@@ -4,205 +4,217 @@ import { useSocket } from "../../providers/socketProvider";
 import CallOptionIcon from "../callOptionIcon/callOptionIcon";
 import { faDisplay, faMicrophone, faPhone, faVideoSlash } from "@fortawesome/free-solid-svg-icons";
 import { profileInfo } from "../directMessageRightBar/directMessageRightBar";
+// import VoiceCallAnswerModal from "../voiceCallAnswerModal/voiceCallAnswerModal";
 
 export default function VideoCall(
-    { profile, video, onClose } :
-    { profile: profileInfo, video: boolean, onClose: () => void }
+    { onCall, profile, video, onClose } :
+    { onCall: boolean, profile: profileInfo, video: boolean, onClose: () => void }
 ) {
     const localVideoRef = useRef<HTMLVideoElement | null>(null);
     const remoteVideoRef = useRef<HTMLVideoElement | null>(null);
-    const [peerConnection, setPeerConnection] = useState<RTCPeerConnection | null>(null);
-    const [mediaStream, setMediaStream] = useState<MediaStream | null>(null);
-    const [isVideoEnabled, setIsVideoEnabled] = useState(false);
+    // const [peerConnection, setPeerConnection] = useState<RTCPeerConnection | null>(null);
+    const peerConnectionRef = useRef<RTCPeerConnection | null>(null);
+    // const [localStream, setLocalStream] = useState<MediaStream | null>(null);
+    // const [remoteStream, setRemoteStream] = useState<MediaStream | null>(null);
+    let localStream: MediaStream;
+    let remoteStream: MediaStream;
+    let didIOffer: boolean = false;
+
+    const peerConfiguration = {
+        iceServers: [
+            { 
+                urls: [
+                    "stun:stun.l.google.com:19302",
+                    "stun:stun1.l.google.com:19302", 
+                ]
+            }
+        ],
+    }
+
+    const [receivedOffer, setReceivedOffer] = useState(null);
+    // const [isVideoEnabled, setIsVideoEnabled] = useState<boolean>(video);
+    const [isVideoEnabled, setIsVideoEnabled] = useState<boolean>(video);
 
     const socket = useSocket();
-    if (!socket) return;
+    if (!socket) return null;
 
-    useEffect(() => {
-        const setupPeerConnection = async () => {
-            if (peerConnection) {
-                peerConnection.close();
-            }
+    const makeCall = async() => {
+        await fetchUserMedia();
+        
+        await createPeerConnection();
 
-            const pc = new RTCPeerConnection({
-                iceServers: [
-                    { urls: [
-                            "stun:stun.l.google.com:19302",
-                            "stun:stun1.l.google.com:19302", 
-                        ]
-                    }
-                ],
-            });
+        try {
+            if (!peerConnectionRef.current) return;
 
-            setPeerConnection(pc);
+            console.log("Creating offer...");
+            const offer = await peerConnectionRef.current.createOffer();
+            console.log(offer);
+            await peerConnectionRef.current.setLocalDescription(offer);
+            didIOffer = true;
 
+            socket.emit("newOffer", offer);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    const answerCall = async(offerObject: any) => {
+        await fetchUserMedia();
+    
+        await createPeerConnection(offerObject[0]);
+
+        const answer = await peerConnectionRef.current?.createAnswer({});
+        await peerConnectionRef.current?.setLocalDescription(answer);
+
+        offerObject[0].answer = answer 
+
+        const offerIceCandidates = await socket.emitWithAck("newAnswer", offerObject[0]);
+        offerIceCandidates.forEach((candidate: RTCIceCandidate) => {
+            peerConnectionRef.current?.addIceCandidate(candidate);
+            console.log("......Added Ice Candidate.....")
+        });
+
+        console.log("offerCandidares:", offerIceCandidates);
+    }
+
+    const fetchUserMedia = () => {
+        return new Promise(async (resolve, reject) => {
             try {
-                const stream = await navigator.mediaDevices.getUserMedia({ video: video, audio: true });
-                setMediaStream(stream);
-
+                const stream = await navigator.mediaDevices.getUserMedia({ 
+                    video: true, 
+                    // audio: false 
+                });
+        
                 if (localVideoRef.current) {
                     localVideoRef.current.srcObject = stream;
                 }
-
-                stream.getTracks().forEach(track => {
-                    if (pc.signalingState !== "closed") {
-                        pc.addTrack(track, stream);
-                    }
-                });
+        
+                localStream = stream;
+                resolve(undefined);
             } catch (error) {
-                console.error("Error accessing media devices:", error);
+                console.error("Error accessing webcam:", error);
+                reject(error);
             }
+        });        
+    }
 
-            pc.ontrack = (event) => {
-                if (remoteVideoRef.current) {
-                    remoteVideoRef.current.srcObject = event.streams[0];
-                }
+    const createPeerConnection = (offerObject?: any) => {
+        return new Promise(async (resolve, _reject) => {
+            const pc = new RTCPeerConnection(peerConfiguration);
+            peerConnectionRef.current = pc;
+
+            remoteStream  = new MediaStream();;
+            if (remoteVideoRef.current) {
+                remoteVideoRef.current.srcObject = remoteStream;
+            }
+       
+            localStream.getTracks().forEach(track => {
+                pc.addTrack(track, localStream);
+            });
+
+            pc.onsignalingstatechange = (event) => {
+                console.log(event);
+                console.log(pc.signalingState);
             };
 
             pc.onicecandidate = (event) => {
+                console.log("......ICE Candidate Found!......");
+                console.log(event);
+
                 if (event.candidate) {
-                    socket.emit("ice-candidate", event.candidate);
+                    socket.emit("sendIceCandidateToServer", {
+                        iceCandidate: event.candidate,
+                        didIOffer
+                    });
                 }
             };
 
-            socket.on("offer", async (offer) => {
-                // if (pc.signalingState !== "stable") {
-                //     console.warn("Ignoring offer: unexpected signaling state", pc.signalingState);
-                //     return;
-                // }
-
-                await pc.setRemoteDescription(new RTCSessionDescription(offer));
-
-                const answer = await pc.createAnswer();
-                await pc.setLocalDescription(answer);
-                console.log("recevied Offer", answer);
-                socket.emit("answer", answer);
-            });
-
-            socket.on("answer", async (answer) => {
-                if (!pc || pc.signalingState !== "have-local-offer") {
-                    console.warn("Ignoring answer: unexpected signaling state", pc?.signalingState);
-                    return;
+            pc.ontrack = (event) => {
+                if (remoteStream) {
+                    event.streams[0].getTracks().forEach(track => {
+                        remoteStream.addTrack(track);
+                    });
+                } else {
+                    console.error("Remote stream is null, unable to add tracks.");
                 }
-                await pc.setRemoteDescription(new RTCSessionDescription(answer));
-                console.log("hearing back from them", answer);
-            });
-
-            socket.on("ice-candidate", async (candidate) => {
-                if (!pc.remoteDescription) {
-                    console.warn("ICE candidate received before remote description was set.");
-                    return;
-                }
-
-                try {
-                    console.log("added candidate", candidate);
-                    await pc.addIceCandidate(new RTCIceCandidate(candidate));
-                } catch (error) {
-                    console.error("Error adding ICE candidate:", error);
-                }
-            });
-
-            return () => {
-                pc.close();
             };
-        };
 
-        setupPeerConnection();
-
-        return () => {
-            if (peerConnection) {
-                peerConnection.close();
-                setPeerConnection(null);
+            if (offerObject) {
+                await pc.setRemoteDescription(offerObject.offer);
             }
-        };
+            
+            resolve(undefined);
+        });  
+    }
 
-    }, [isVideoEnabled]);
-
-    const startCall = async () => {
-        try {
-            if (!peerConnection) return;
-            const offer = await peerConnection.createOffer();
-            await peerConnection.setLocalDescription(offer);
-            socket.emit("offer", offer);
-            console.log("this is initial signal:", peerConnection.signalingState);
-            console.log("Call started");
-        } catch (error) {
-            console.error(error);
+    const addAnswer = async (offerObject: any) => {
+        if (offerObject.answer) {
+            await peerConnectionRef.current?.setRemoteDescription(offerObject.answer);
+        } else {
+            console.error("Received an invalid answer:", offerObject);
         }
-    };
+    }
 
-    const endCall = () => {
-        if (peerConnection) {
-            peerConnection.getSenders().forEach(sender => peerConnection.removeTrack(sender));
-            peerConnection.close();
-            setPeerConnection(null);
-        }
-
-        if (mediaStream) {
-            mediaStream.getTracks().forEach(track => {
-                track.stop();
-                mediaStream.removeTrack(track);
-            });
-            setMediaStream(null);
-        }
-
-        socket.emit("call-ended");
-        console.log("Call ended");
-
-        if (localVideoRef.current) localVideoRef.current.srcObject = null;
-        if (remoteVideoRef.current) remoteVideoRef.current.srcObject = null;
-
-        console.log("Closed");
-        onClose();
-    };
+    const addNewIceCandidate = async (iceCandidate: any) => {
+        await peerConnectionRef.current?.addIceCandidate(iceCandidate);
+        console.log("......Added New Ice Candidate.....")
+    }
 
     const toggleVideo = () => {
-        if (isVideoEnabled) {
-            mediaStream?.getTracks().forEach(track => {
-                if (track.kind === 'video') {
-                    track.stop();
-                }
-            });
-        }
-        setIsVideoEnabled(!isVideoEnabled);
+        setIsVideoEnabled(prev => !prev);
     };
+
+    useEffect(() => {
+        const handleNewOfferAwaiting = (offerObject: any) => {
+            setReceivedOffer(offerObject);
+            console.log("newOfferAwaiting", offerObject);
+        };
+    
+        const handleAnswerResponse = (offerObject: any) => {
+            console.log(offerObject);
+            addAnswer(offerObject);
+        };
+    
+        const handleIceCandidate = (iceCandidate: any) => {
+            console.log(iceCandidate);
+            addNewIceCandidate(iceCandidate);
+        };
+    
+        socket.on("newOfferAwaiting", handleNewOfferAwaiting);
+        socket.on("answerResponse", handleAnswerResponse);
+        socket.on("receivedIceCandidateFromServer", handleIceCandidate);
+    
+        return () => {
+            socket.off("newOfferAwaiting", handleNewOfferAwaiting);
+            socket.off("answerResponse", handleAnswerResponse);
+            socket.off("receivedIceCandidateFromServer", handleIceCandidate);
+        };
+    }, [socket]);
+    
+
+    if (!onCall) return null;
 
     return (
         <>
+            {/* <VoiceCallAnswerModal open={receivedOffer} onClose={() => setReceivedOffer(false)} /> */}
             <div className={classes.videoCallWrapper}>
-                {
-                    isVideoEnabled ?
-                    (
-                        <div className={classes.videoWrapper}>
-                            <video 
-                                ref={localVideoRef} 
-                                className={classes.video} 
-                                autoPlay
-                                playsInline 
-                            />
-                            <video 
-                                ref={remoteVideoRef} 
-                                className={classes.video} 
-                                autoPlay 
-                                playsInline 
-                            />   
-                        </div>
-                    )
-                    :
+                {isVideoEnabled ? (
+                    <div className={classes.videoWrapper}>
+                        <video ref={localVideoRef} className={classes.video} autoPlay playsInline />
+                        <video ref={remoteVideoRef} className={classes.video} autoPlay playsInline />
+                    </div>
+                ) : (
                     <div className={classes.voiceCallWrapper}>
                         <div className={`main-topbar ${classes.videoCallTopBar}`}>
                             <div className="main-topbar-profile-info">
                                 <div className={classes.profileIconWrapper}>
                                     <img className={classes.profileIconTopbar} src={profile.profilePic} alt="" />
                                 </div>
-                                <div className="friends-title">
-                                    {profile.displayName}
-                                </div>
+                                <div className="friends-title">{profile.displayName}</div>
                             </div>
                         </div>
 
                         <div className={classes.callRegionWrapper} />
-
                         <div className={classes.profileWrapper}>
                             <div className={classes.profile}>
                                 <img className={classes.profileIcon} src={profile.profilePic} alt="" />
@@ -212,37 +224,35 @@ export default function VideoCall(
                         <div className={classes.callOptionOuterWrapper}>
                             <div className={classes.callOptionInnerWrapper}>
                                 <CallOptionIcon icon={faVideoSlash} callback={toggleVideo} />
-                                <CallOptionIcon icon={faDisplay} callback={() => {}} />
-                                <CallOptionIcon icon={faMicrophone} callback={startCall} />
-                                <CallOptionIcon icon={faPhone} callback={endCall} />
+                                <CallOptionIcon icon={faDisplay} callback={() => answerCall(receivedOffer)} />
+                                <CallOptionIcon icon={faMicrophone} callback={makeCall} />
+                                <CallOptionIcon icon={faPhone} callback={onClose} />
                             </div>
                         </div>
                     </div>
-                }
+                )}
             </div>
-            {
-                isVideoEnabled ?
+
+            {isVideoEnabled && (
                 <div className={classes.videoCallIconWrapper}>
                     <div className={`main-topbar ${classes.videoCallTopBar}`}>
                         <div className="main-topbar-profile-info">
                             <div className={classes.profileIconWrapper}>
                                 <img className={classes.profileIconTopbar} src={profile.profilePic} alt="" />
                             </div>
-                            <div className="friends-title">
-                                {profile.displayName}
-                            </div>
+                            <div className="friends-title">{profile.displayName}</div>
                         </div>
                     </div>
                     <div className={classes.callOptionOuterWrapper}>
                         <div className={classes.callOptionInnerWrapper}>
                             <CallOptionIcon icon={faVideoSlash} callback={toggleVideo} />
-                            <CallOptionIcon icon={faDisplay} callback={() => {}} />
-                            <CallOptionIcon icon={faMicrophone} callback={startCall} />
-                            <CallOptionIcon icon={faPhone} callback={endCall} />
+                            <CallOptionIcon icon={faDisplay} callback={() => answerCall(receivedOffer)} />
+                            <CallOptionIcon icon={faMicrophone} callback={makeCall} />
+                            <CallOptionIcon icon={faPhone} callback={onClose} />
                         </div>
                     </div>
-                </div> : ""
-            }
+                </div>
+            )}
         </>
     );
 };

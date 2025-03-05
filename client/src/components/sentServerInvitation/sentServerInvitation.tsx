@@ -5,7 +5,7 @@ export default function SentServerInvitation(
 ) {
     const handleJoiningServer = async () => {
         try {
-            const response = await fetch(`https://discloned.up.railway.app/friendJoinServer`, {
+            const response = await fetch(`http://localhost:3000/friendJoinServer`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

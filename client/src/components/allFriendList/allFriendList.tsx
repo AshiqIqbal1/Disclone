@@ -44,7 +44,7 @@ export default function AllFriendList({ filter }: {filter: string}) {
 
     const getFriendList = async () => {
         try {
-            const response = await fetch("https://discloned.up.railway.app/friendList", {
+            const response = await fetch("http://localhost:3000/friendList", {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',

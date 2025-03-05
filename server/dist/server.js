@@ -29,6 +29,7 @@ const changeUserStatus = async (userid, newStatus) => {
 app.get("/", (req, res) => {
     res.status(201).json({ message: "Hello, backend is your working!" });
 });
+const offers = [];
 io.on("connection", async (socket) => {
     const token = socket.handshake.auth.token;
     if (!token) {
@@ -51,14 +52,48 @@ io.on("connection", async (socket) => {
             changeUserStatus(userid, "Offline");
             console.log(`User ${userid} disconnected`);
         });
-        socket.on("offer", (data) => {
-            socket.broadcast.emit("offer", data);
+        socket.on("newOffer", (newOffer) => {
+            offers.push({
+                offererUserid: userid,
+                offer: newOffer,
+                offererIceCandidates: [],
+                answererUserid: null,
+                answer: [],
+                answererIceCandiates: []
+            });
+            socket.broadcast.emit("newOfferAwaiting", offers.slice(-1));
         });
-        socket.on("answer", (data) => {
-            socket.broadcast.emit("answer", data);
+        socket.on("newAnswer", (offerObject, ackFunction) => {
+            const offerToUpdate = offers.find(o => o.offererUserid === offerObject.offererUserid);
+            if (!offerToUpdate) {
+                console.log("No Offer to Update!");
+                return;
+            }
+            ackFunction(offerToUpdate.offererIceCandidates);
+            offerToUpdate.answer = offerObject.answer;
+            offerToUpdate.answererUserid = userid;
+            socket.to(offerToUpdate.offererUserid).emit("answerResponse", offerToUpdate);
         });
-        socket.on("ice-candidate", (data) => {
-            socket.broadcast.emit("ice-candidate", data);
+        socket.on("sendIceCandidateToServer", async (iceCandidateObject) => {
+            const { didIOffer, iceCandidate } = iceCandidateObject;
+            if (didIOffer) {
+                const offerInOffers = offers.find(o => o.offererUserid === userid);
+                if (offerInOffers) {
+                    offerInOffers.offererIceCandidates.push(iceCandidate);
+                    if (offerInOffers.answererUserid) {
+                        socket.to(userid).emit("receivedIceCandidateFromServer", iceCandidate);
+                    }
+                }
+            }
+            else {
+                const offerInOffers = offers.find(o => o.answererUserid === userid);
+                if (offerInOffers) {
+                    socket.to(offerInOffers.answererUserid).emit("receivedIceCandidateFromServer", iceCandidate);
+                }
+                else {
+                    console.log("Answerer userid not found in offers");
+                }
+            }
         });
         socket.on("disconnect", () => {
             console.log("User disconnected:", socket.id);

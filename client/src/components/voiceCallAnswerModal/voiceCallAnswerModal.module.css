@@ -1,6 +1,14 @@
 .modalWrapper {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     width: 232px;
     height: 270px;
+    border-radius: 4px;
     padding: 16px;
-    background-color: black;
+    background-color: oklab(0.321044 -0.000249296 -0.00927344);
+    display: flex;
+    flex-direction: column;
+    z-index: 1001;
 }

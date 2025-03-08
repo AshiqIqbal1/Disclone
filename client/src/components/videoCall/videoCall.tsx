@@ -1,15 +1,19 @@
 import classes from "./videoCall.module.css";
-import { useEffect, useRef, useState } from "react";
+import { forwardRef, useEffect, useImperativeHandle, useRef } from "react";
 import { useSocket } from "../../providers/socketProvider";
 import CallOptionIcon from "../callOptionIcon/callOptionIcon";
 import { faDisplay, faMicrophone, faPhone, faVideoSlash } from "@fortawesome/free-solid-svg-icons";
 import { profileInfo } from "../directMessageRightBar/directMessageRightBar";
-// import VoiceCallAnswerModal from "../voiceCallAnswerModal/voiceCallAnswerModal";
 
-export default function VideoCall(
-    { onCall, profile, video, onClose } :
-    { onCall: boolean, profile: profileInfo, video: boolean, onClose: () => void }
-) {
+export const VideoCall = forwardRef((
+    { onVoiceCall, profile, receiveCall, onClose }: 
+    { onVoiceCall: boolean, profile: profileInfo, receiveCall: (arg0: profileInfo) => void, onClose: () => void },
+    ref
+) => {
+
+    const socket = useSocket();
+    if (!socket) return null;
+
     const localVideoRef = useRef<HTMLVideoElement | null>(null);
     const remoteVideoRef = useRef<HTMLVideoElement | null>(null);
     const peerConnectionRef = useRef<RTCPeerConnection | null>(null);
@@ -28,56 +32,61 @@ export default function VideoCall(
         ],
     }
 
-    const [receivedOffer, setReceivedOffer] = useState(null);
-    const [isVideoEnabled, setIsVideoEnabled] = useState<boolean>(video);
+    const isVideoEnabled = useRef<boolean>(false);
 
-    const socket = useSocket();
-    if (!socket) return null;
+    useImperativeHandle(ref, () => ({
+        answer: async (offerObject: any) => {
 
-    const makeCall = async() => {
-        await fetchUserMedia();
+            console.log(offerObject);
+            isVideoEnabled.current = offerObject[0].offer.sdp.includes("m=video");
+
+            await fetchUserMedia();
         
-        await createPeerConnection();
-
-        try {
-            if (!peerConnectionRef.current) return;
-
-            console.log("Creating offer...");
-            const offer = await peerConnectionRef.current.createOffer();
-            console.log(offer);
-            await peerConnectionRef.current.setLocalDescription(offer);
-            didIOffer = true;
-
-            socket.emit("newOffer", offer);
-        } catch (error) {
-            console.log(error);
-        }
-    }
-
-    const answerCall = async(offerObject: any) => {
-        await fetchUserMedia();
+            await createPeerConnection(offerObject[0]);
     
-        await createPeerConnection(offerObject[0]);
+            const answer = await peerConnectionRef.current?.createAnswer({});
+            await peerConnectionRef.current?.setLocalDescription(answer);
+    
+            offerObject[0].answer = answer 
+    
+            const offerIceCandidates = await socket.emitWithAck("newAnswer", offerObject[0]);
+            offerIceCandidates.forEach((candidate: RTCIceCandidate) => {
+                peerConnectionRef.current?.addIceCandidate(candidate);
+                console.log("......Added Ice Candidate.....")
+            });
+    
+            console.log("offerCandidates:", offerIceCandidates);
+        },
 
-        const answer = await peerConnectionRef.current?.createAnswer({});
-        await peerConnectionRef.current?.setLocalDescription(answer);
+        call: async (isVideo: boolean) => {
+            
+            isVideoEnabled.current = isVideo;
 
-        offerObject[0].answer = answer 
-
-        const offerIceCandidates = await socket.emitWithAck("newAnswer", offerObject[0]);
-        offerIceCandidates.forEach((candidate: RTCIceCandidate) => {
-            peerConnectionRef.current?.addIceCandidate(candidate);
-            console.log("......Added Ice Candidate.....")
-        });
-
-        console.log("offerCandidares:", offerIceCandidates);
-    }
+            await fetchUserMedia();
+            
+            await createPeerConnection();
+    
+            try {
+                if (!peerConnectionRef.current) return;
+    
+                console.log("Creating offer...");
+                const offer = await peerConnectionRef.current.createOffer();
+                console.log(offer);
+                await peerConnectionRef.current.setLocalDescription(offer);
+                didIOffer = true;
+    
+                socket.emit("newOffer", offer);
+            } catch (error) {
+                console.log(error);
+            }
+        }
+    }));
 
     const fetchUserMedia = () => {
         return new Promise(async (resolve, reject) => {
             try {
                 const stream = await navigator.mediaDevices.getUserMedia({ 
-                    video: isVideoEnabled, 
+                    video: isVideoEnabled.current, 
                     audio: true 
                 });
         
@@ -157,16 +166,13 @@ export default function VideoCall(
     }
 
     const toggleVideo = () => {
-        setIsVideoEnabled(prev => !prev);
+        isVideoEnabled.current = !isVideoEnabled.current;
     };
 
     useEffect(() => {
-        makeCall();
-    }, [])
-    useEffect(() => {
         const handleNewOfferAwaiting = (offerObject: any) => {
-            setReceivedOffer(offerObject);
             console.log("newOfferAwaiting", offerObject);
+            receiveCall(offerObject);
         };
     
         const handleAnswerResponse = (offerObject: any) => {
@@ -189,14 +195,12 @@ export default function VideoCall(
             socket.off("receivedIceCandidateFromServer", handleIceCandidate);
         };
     }, [socket]);
-    
 
-    if (!onCall) return "";
+    if (!onVoiceCall) return null;
     return (
         <>
-            {/* <VoiceCallAnswerModal open={receivedOffer} onClose={() => setReceivedOffer(false)} /> */}
             <div className={classes.videoCallWrapper}>
-                {isVideoEnabled ? (
+                {isVideoEnabled.current ? (
                     <div className={classes.videoWrapper}>
                         <video ref={localVideoRef} className={classes.video} autoPlay playsInline />
                         <video ref={remoteVideoRef} className={classes.video} autoPlay playsInline />
@@ -222,8 +226,8 @@ export default function VideoCall(
                         <div className={classes.callOptionOuterWrapper}>
                             <div className={classes.callOptionInnerWrapper}>
                                 <CallOptionIcon icon={faVideoSlash} callback={toggleVideo} />
-                                <CallOptionIcon icon={faDisplay} callback={() => answerCall(receivedOffer)} />
-                                <CallOptionIcon icon={faMicrophone} callback={makeCall} />
+                                <CallOptionIcon icon={faDisplay} callback={() => {}} />
+                                <CallOptionIcon icon={faMicrophone} callback={() => {}} />
                                 <CallOptionIcon icon={faPhone} callback={onClose} />
                             </div>
                         </div>
@@ -231,7 +235,7 @@ export default function VideoCall(
                 )}
             </div>
 
-            {isVideoEnabled && (
+            {isVideoEnabled.current && (
                 <div className={classes.videoCallIconWrapper}>
                     <div className={`main-topbar ${classes.videoCallTopBar}`}>
                         <div className="main-topbar-profile-info">
@@ -244,8 +248,8 @@ export default function VideoCall(
                     <div className={classes.callOptionOuterWrapper}>
                         <div className={classes.callOptionInnerWrapper}>
                             <CallOptionIcon icon={faVideoSlash} callback={toggleVideo} />
-                            <CallOptionIcon icon={faDisplay} callback={() => answerCall(receivedOffer)} />
-                            <CallOptionIcon icon={faMicrophone} callback={makeCall} />
+                            <CallOptionIcon icon={faDisplay} callback={() => {}} />
+                            <CallOptionIcon icon={faMicrophone} callback={() => {}} />
                             <CallOptionIcon icon={faPhone} callback={onClose} />
                         </div>
                     </div>
@@ -253,4 +257,4 @@ export default function VideoCall(
             )}
         </>
     );
-};
+});

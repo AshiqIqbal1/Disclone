@@ -1,6 +1,6 @@
 import SecondarySidebar from "../../components/secondarySidebar/secondarySidebar";
 import classes from "./directMessage.module.css";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Types } from "mongoose";
 import { useSocket } from "../../providers/socketProvider";
@@ -8,7 +8,8 @@ import DirectMessageRightBar, { profileInfo } from "../../components/directMessa
 import ChatBox from "../../components/chatBox/chatBox";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPhoneVolume, faVideo } from "@fortawesome/free-solid-svg-icons";
-import VideoCall from "../../components/videoCall/videoCall";
+import { VideoCall } from "../../components/videoCall/videoCall";
+import VoiceCallAnswerModal from "../../components/voiceCallAnswerModal/voiceCallAnswerModal";
 
 export interface Message {
     sentBy: Types.ObjectId,
@@ -32,11 +33,19 @@ export default function DirectMessage() {
     });
 
     const [onVoiceCall, setOnVoiceCall] = useState(false);
-    const [video, setVideo] = useState(false);
+    const [receivedOffer, setReceivedOffer] = useState(null);
+    const videoCallAnswerRef = useRef<{ answer: (arg0: any) => void, call: (arg0: boolean) => void }>(null);
+    const [answerModal, setAnswerModal] = useState(false);
 
     const getProfile = (data: profileInfo) => {
         setProfile(data);
         document.title = `Discord | @${data.displayName}`
+    }
+
+    const receiveCall = (data: any) => {
+        console.log("call received");
+        setReceivedOffer(data);
+        setAnswerModal(true);
     }
 
     const getDirectMessages = async () => {
@@ -103,18 +112,27 @@ export default function DirectMessage() {
     return (
         <div className={classes.wrapper}>
             <SecondarySidebar />
+            <VoiceCallAnswerModal 
+                answer={() => {
+                    videoCallAnswerRef.current?.answer(receivedOffer);
+                    setOnVoiceCall(true);
+                    setAnswerModal(false);
+                }}
+                open={answerModal} 
+                onClose={() => setAnswerModal(false)} 
+            />
             <main className="main-wrapper">
                 {
-                    onVoiceCall ?
-                        <VideoCall 
-                            onCall={onVoiceCall} 
-                            profile={profile} 
-                            video={video} 
-                            onClose={() => {
-                                setOnVoiceCall(false);
-                                setVideo(false);
-                            }}/>
-                    : ""
+                    <VideoCall 
+                        ref={videoCallAnswerRef}
+                        onVoiceCall={onVoiceCall}
+                        profile={profile}
+                        receiveCall={receiveCall}
+                        onClose={() => {
+                            setOnVoiceCall(false);
+                        }}
+                    />
+                    
                 }
                 <div className="main-topbar">
                     <div className="main-topbar-profile-info">
@@ -134,7 +152,7 @@ export default function DirectMessage() {
                                     <div 
                                         onClick={() => {
                                             setOnVoiceCall(true);
-                                            setVideo(true);
+                                            videoCallAnswerRef.current?.call(true)
                                         }}
                                         className="main-topbar-icon-wrapper"
                                     >
@@ -147,6 +165,7 @@ export default function DirectMessage() {
                                     <div 
                                         onClick={() => {
                                             setOnVoiceCall(true);
+                                            videoCallAnswerRef.current?.call(false)
                                         }}
                                         className="main-topbar-icon-wrapper"
                                     >

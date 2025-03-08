@@ -1,14 +1,19 @@
 .mainContentWrapper {
-    display: flex;
-    flex-direction: column;
-    flex: 1 1 auto;
-}
-
-.messagesWrapper {
-    flex: 1 1 auto;
+    width: 100%;
+    height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
+}
+
+.messagesWrapper {
+    width: 100%;
+    max-height: calc(100vh - 66px - 48px - 32px);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow-y: scroll;
+    overflow-x: hidden;
 }
 
 .sendMessageWrapper {
@@ -35,8 +40,19 @@
     border: none;
     overflow-wrap: anywhere;
     white-space: break-spaces;
-    padding: 11px 10px 11px 0px;
+    padding: 11px 16px;
     overflow: auto;
+}
+
+.sendMessageInput span {
+    opacity: 0.35;
+    pointer-events: none;
+}
+
+.sendMessageInput:empty::before {
+    content: attr(data-placeholder);
+    opacity: 0.4;
+    pointer-events: none;
 }
 
 .dateSeperator {

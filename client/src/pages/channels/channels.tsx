@@ -18,7 +18,7 @@ export default function Channels() {
             case "ONLINE":
                 return <AllFriendList filter="ONLINE" />
             case "ADD FRIENDS":
-                return <AddFriend />
+                return <AddFriend onAdd={() => setSelected("PENDING")} />
             case "PENDING":
                 return <PendingFriendRequest />
         }

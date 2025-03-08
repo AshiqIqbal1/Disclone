@@ -51,6 +51,8 @@
 .privateChannels ul {
     list-style: none;
     height: 848px;
+    overflow-y: scroll;
+    overflow-x: hidden;
 }
 
 .privateChannels ul li {

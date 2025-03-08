@@ -7,7 +7,7 @@ import { useSocket } from "../../providers/socketProvider";
 import DirectMessageRightBar, { profileInfo } from "../../components/directMessageRightBar/directMessageRightBar";
 import ChatBox from "../../components/chatBox/chatBox";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPhoneVolume } from "@fortawesome/free-solid-svg-icons";
+import { faPhoneVolume, faVideo } from "@fortawesome/free-solid-svg-icons";
 import VideoCall from "../../components/videoCall/videoCall";
 
 export interface Message {
@@ -32,6 +32,7 @@ export default function DirectMessage() {
     });
 
     const [onVoiceCall, setOnVoiceCall] = useState(false);
+    const [video, setVideo] = useState(false);
 
     const getProfile = (data: profileInfo) => {
         setProfile(data);
@@ -103,7 +104,18 @@ export default function DirectMessage() {
         <div className={classes.wrapper}>
             <SecondarySidebar />
             <main className="main-wrapper">
-                <VideoCall onCall={onVoiceCall} profile={profile} video={true} onClose={() => setOnVoiceCall(false)}/>
+                {
+                    onVoiceCall ?
+                        <VideoCall 
+                            onCall={onVoiceCall} 
+                            profile={profile} 
+                            video={video} 
+                            onClose={() => {
+                                setOnVoiceCall(false);
+                                setVideo(false);
+                            }}/>
+                    : ""
+                }
                 <div className="main-topbar">
                     <div className="main-topbar-profile-info">
                         <div className={classes.profileIconWrapper}>
@@ -114,12 +126,39 @@ export default function DirectMessage() {
                         </div>
                     </div>
                     <div className="main-topbar-profile-info">
-                        <div 
-                            onClick={() => setOnVoiceCall(true)}
-                            className="main-topbar-icon-wrapper"
-                        >
-                            <FontAwesomeIcon className="main-topbar-icon" icon={faPhoneVolume}/>
-                        </div>
+
+                        {
+                            !onVoiceCall ?
+                            (
+                                <>
+                                    <div 
+                                        onClick={() => {
+                                            setOnVoiceCall(true);
+                                            setVideo(true);
+                                        }}
+                                        className="main-topbar-icon-wrapper"
+                                    >
+                                        <FontAwesomeIcon 
+                                            className="main-topbar-icon" 
+                                            icon={faVideo}
+                                            size="xl"
+                                        />
+                                    </div>
+                                    <div 
+                                        onClick={() => {
+                                            setOnVoiceCall(true);
+                                        }}
+                                        className="main-topbar-icon-wrapper"
+                                    >
+                                        <FontAwesomeIcon 
+                                            className="main-topbar-icon" 
+                                            icon={faPhoneVolume}
+                                        />
+                                    </div>
+                                </>
+                            )
+                            : ""
+                        }
                     </div>
                 </div>
                 <div className="content-wrapper">

@@ -1,11 +1,12 @@
 import { useState } from "react";
 import classes from "./addFriend.module.css";
 
-export default function AddFriend() {
+export default function AddFriend({onAdd} : {onAdd: () => void}) {
 
     const [username, setUsername] = useState({
         username: ""
     });
+
     const handleChange = (event : React.ChangeEvent<HTMLInputElement>) => {
         setUsername({
             ...username,
@@ -24,11 +25,13 @@ export default function AddFriend() {
                 },
                 body: JSON.stringify(username)
             });
-            
+
             if (!response.ok) {
                 const errorData = await response.json();
                 throw new Error(`${errorData.message} Status: ${response.status}`);
             }
+            
+            onAdd();
         } catch (error) {
             console.error(error);
         }

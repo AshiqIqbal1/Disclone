@@ -1,12 +1,13 @@
 import classes from "./chatBox.module.css"
 import SentMessageItem from "../sentMessageItem/sentMessageItem";
 import { Message } from "../../pages/directMessage/directMessage";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHashtag } from "@fortawesome/free-solid-svg-icons";
 
 export default function ChatBox({ channel, send, messages } : {channel: string, send: any, messages: Message[]}) {
     const sendMessageInputRef = useRef<HTMLDivElement>(null);
+    const scrollRef = useRef<HTMLDivElement | null>(null);
     
     const renderMessage = (message: Message, index: number, array: Message[]) => {
         const prevMessage = array[index - 1];
@@ -63,10 +64,16 @@ export default function ChatBox({ channel, send, messages } : {channel: string, 
             sendMessageInputRef.current!.innerText = "";
         }
     };
+
+    useEffect(() => {
+        if (scrollRef.current) {
+            scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+        }
+    }, [messages]);
     
     return (
         <div className={classes.mainContentWrapper}>
-            <div className={classes.messagesWrapper}>
+            <div ref={scrollRef} className={classes.messagesWrapper}>
                 {
                     channel !== "" ?
                         (
@@ -98,8 +105,8 @@ export default function ChatBox({ channel, send, messages } : {channel: string, 
                         className={classes.sendMessageInput}
                         contentEditable
                         onKeyDown={handleEnterPress}
-                    >
-                    </div>
+                        data-placeholder="Type your message here..."
+                    />
                 </div>
             </div>
         </div>

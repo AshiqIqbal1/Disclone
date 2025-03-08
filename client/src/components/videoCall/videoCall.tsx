@@ -12,10 +12,7 @@ export default function VideoCall(
 ) {
     const localVideoRef = useRef<HTMLVideoElement | null>(null);
     const remoteVideoRef = useRef<HTMLVideoElement | null>(null);
-    // const [peerConnection, setPeerConnection] = useState<RTCPeerConnection | null>(null);
     const peerConnectionRef = useRef<RTCPeerConnection | null>(null);
-    // const [localStream, setLocalStream] = useState<MediaStream | null>(null);
-    // const [remoteStream, setRemoteStream] = useState<MediaStream | null>(null);
     let localStream: MediaStream;
     let remoteStream: MediaStream;
     let didIOffer: boolean = false;
@@ -32,7 +29,6 @@ export default function VideoCall(
     }
 
     const [receivedOffer, setReceivedOffer] = useState(null);
-    // const [isVideoEnabled, setIsVideoEnabled] = useState<boolean>(video);
     const [isVideoEnabled, setIsVideoEnabled] = useState<boolean>(video);
 
     const socket = useSocket();
@@ -81,7 +77,7 @@ export default function VideoCall(
         return new Promise(async (resolve, reject) => {
             try {
                 const stream = await navigator.mediaDevices.getUserMedia({ 
-                    video: true, 
+                    video: isVideoEnabled, 
                     audio: true 
                 });
         
@@ -165,6 +161,9 @@ export default function VideoCall(
     };
 
     useEffect(() => {
+        makeCall();
+    }, [])
+    useEffect(() => {
         const handleNewOfferAwaiting = (offerObject: any) => {
             setReceivedOffer(offerObject);
             console.log("newOfferAwaiting", offerObject);
@@ -192,8 +191,7 @@ export default function VideoCall(
     }, [socket]);
     
 
-    if (!onCall) return null;
-
+    if (!onCall) return "";
     return (
         <>
             {/* <VoiceCallAnswerModal open={receivedOffer} onClose={() => setReceivedOffer(false)} /> */}

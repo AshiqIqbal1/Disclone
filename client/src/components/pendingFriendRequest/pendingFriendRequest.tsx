@@ -129,7 +129,7 @@ export default function PendingFriendRequest() {
                                             child={<FontAwesomeIcon icon={faXmark} />} 
                                             type="reject" 
                                             userid={user.id}
-                                            callback={acceptFriendRequest}
+                                            callback={() => console.log("rejected")}
                                         />
                                     </OnlinePeople>
                                 ))
@@ -154,7 +154,7 @@ export default function PendingFriendRequest() {
                                             child={<FontAwesomeIcon icon={faXmark} />} 
                                             type="reject" 
                                             userid={user.id}
-                                            callback={acceptFriendRequest}
+                                            callback={() => console.log("rejected")}
                                         />
 
                                     </OnlinePeople>

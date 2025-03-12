@@ -100,7 +100,7 @@ export default function DirectMessage() {
 
     useEffect(() => {
         getDirectMessages();
-    }, []);
+    }, [recipient]);
 
     useEffect(() => {
         socket?.on('receiveMessages', (data) => {

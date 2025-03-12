@@ -147,6 +147,14 @@ export const VideoCall = forwardRef((
                 }
             };
 
+            pc.oniceconnectionstatechange = () => {
+                if (
+                    pc.iceConnectionState === "closed"
+                ) {
+                    endCall();
+                }
+            }
+
             if (offerObject) {
                 await pc.setRemoteDescription(offerObject.offer);
             }

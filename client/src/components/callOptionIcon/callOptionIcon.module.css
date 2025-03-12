@@ -28,6 +28,14 @@
     background-color: hsl(359.504 calc(1*60.199%) 39.412% /1);
 }
 
+.phoneGreen {
+    background-color: rgb(97, 164, 94);
+}
+
+.phoneGreen:hover {
+    background-color: rgba(97, 164, 94, 0.7);
+}
+
 .phoneEnd .optionIcon {
     width: 20px;
     height: 20px;

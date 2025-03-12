@@ -66,7 +66,7 @@ io.on("connection", async (socket) => {
             console.log(`User ${userid} disconnected`);
         });
 
-        socket.on("newOffer", (newOffer) => {
+        socket.on("newOffer", (newOffer, recipient) => {
             offers.push({
                 offererUserid: userid,
                 offer: newOffer,
@@ -77,7 +77,7 @@ io.on("connection", async (socket) => {
 
             })
     
-            socket.broadcast.emit("newOfferAwaiting", offers.slice(-1));
+            socket.to(recipient).emit("newOfferAwaiting", offers.slice(-1));
         });
     
         socket.on("newAnswer", (offerObject, ackFunction) => {

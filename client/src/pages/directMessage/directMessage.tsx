@@ -118,6 +118,7 @@ export default function DirectMessage() {
                     setOnVoiceCall(true);
                     setAnswerModal(false);
                 }}
+                profile={profile}
                 open={answerModal} 
                 onClose={() => setAnswerModal(false)} 
             />

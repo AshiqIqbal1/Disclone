@@ -4,21 +4,22 @@ import { useSocket } from "../../providers/socketProvider";
 import CallOptionIcon from "../callOptionIcon/callOptionIcon";
 import { faDisplay, faMicrophone, faPhone, faVideoSlash } from "@fortawesome/free-solid-svg-icons";
 import { profileInfo } from "../directMessageRightBar/directMessageRightBar";
+import { useParams } from "react-router-dom";
 
 export const VideoCall = forwardRef((
     { onVoiceCall, profile, receiveCall, onClose }: 
     { onVoiceCall: boolean, profile: profileInfo, receiveCall: (arg0: profileInfo) => void, onClose: () => void },
     ref
 ) => {
-
     const socket = useSocket();
     if (!socket) return null;
 
     const localVideoRef = useRef<HTMLVideoElement | null>(null);
     const remoteVideoRef = useRef<HTMLVideoElement | null>(null);
     const peerConnectionRef = useRef<RTCPeerConnection | null>(null);
-    let localStream: MediaStream;
-    let remoteStream: MediaStream;
+    const localStream = useRef<MediaStream | null>(null);
+    const remoteStream = useRef<MediaStream | null>(null);
+
     let didIOffer: boolean = false;
 
     const peerConfiguration = {
@@ -33,11 +34,10 @@ export const VideoCall = forwardRef((
     }
 
     const isVideoEnabled = useRef<boolean>(false);
+    const { recipient } = useParams();
 
     useImperativeHandle(ref, () => ({
         answer: async (offerObject: any) => {
-
-            console.log(offerObject);
             isVideoEnabled.current = offerObject[0].offer.sdp.includes("m=video");
 
             await fetchUserMedia();
@@ -74,9 +74,9 @@ export const VideoCall = forwardRef((
                 console.log(offer);
                 await peerConnectionRef.current.setLocalDescription(offer);
                 didIOffer = true;
-    
-                socket.emit("newOffer", offer);
-            } catch (error) {
+                
+                socket.emit("newOffer", offer, recipient);
+            } catch (error) {   
                 console.log(error);
             }
         }
@@ -94,7 +94,8 @@ export const VideoCall = forwardRef((
                     localVideoRef.current.srcObject = stream;
                 }
         
-                localStream = stream;
+                localStream.current = stream;
+                // setLocalStream(stream);
                 resolve(undefined);
             } catch (error) {
                 console.error("Error accessing webcam:", error);
@@ -108,13 +109,15 @@ export const VideoCall = forwardRef((
             const pc = new RTCPeerConnection(peerConfiguration);
             peerConnectionRef.current = pc;
 
-            remoteStream  = new MediaStream();;
+            remoteStream.current = new MediaStream();;
             if (remoteVideoRef.current) {
-                remoteVideoRef.current.srcObject = remoteStream;
+                remoteVideoRef.current.srcObject = remoteStream.current;
             }
        
-            localStream.getTracks().forEach(track => {
-                pc.addTrack(track, localStream);
+            localStream.current?.getTracks().forEach(track => {
+                if (localStream.current) {
+                    pc.addTrack(track, localStream.current);
+                }
             });
 
             pc.onsignalingstatechange = (event) => {
@@ -135,14 +138,24 @@ export const VideoCall = forwardRef((
             };
 
             pc.ontrack = (event) => {
-                if (remoteStream) {
+                if (remoteStream.current) {
                     event.streams[0].getTracks().forEach(track => {
-                        remoteStream.addTrack(track);
+                        remoteStream.current?.addTrack(track);
                     });
                 } else {
                     console.error("Remote stream is null, unable to add tracks.");
                 }
             };
+
+            pc.oniceconnectionstatechange = () => {
+                if (
+                    pc.iceConnectionState === "disconnected" || 
+                    pc.iceConnectionState === "failed" || 
+                    pc.iceConnectionState === "closed"
+                ) {
+                    endCall();
+                }
+            }
 
             if (offerObject) {
                 await pc.setRemoteDescription(offerObject.offer);
@@ -168,6 +181,49 @@ export const VideoCall = forwardRef((
     const toggleVideo = () => {
         isVideoEnabled.current = !isVideoEnabled.current;
     };
+
+    const endCall = async () => {
+        console.log("Stopping call...");
+        console.log("Local Stream:", localStream);
+        console.log("Remote Stream:", remoteStream);
+
+        if (localStream) {
+            localStream.current?.getTracks().forEach(track => {
+                console.log("Stopping local track:", track);
+                track.stop(); 
+            });
+            localStream.current = null;
+            // setLocalStream(null);
+        }
+
+        if (localVideoRef?.current) {
+            localVideoRef.current.srcObject = null;
+        }
+    
+        if (remoteStream.current) {
+            remoteStream.current.getTracks().forEach(track => {
+                console.log("Stopping remote track:", track);
+                track.stop();
+            });
+            remoteStream.current = null;
+        }
+
+        if (remoteVideoRef?.current) {
+            remoteVideoRef.current.srcObject = null;
+        }
+    
+        if (peerConnectionRef?.current) {
+            peerConnectionRef.current.ontrack = null;
+            peerConnectionRef.current.onicecandidate = null;
+            peerConnectionRef.current.oniceconnectionstatechange = null;
+            peerConnectionRef.current.onsignalingstatechange = null;
+            peerConnectionRef.current.close();
+            peerConnectionRef.current = null;
+        }
+        
+        onClose();
+    };
+    
 
     useEffect(() => {
         const handleNewOfferAwaiting = (offerObject: any) => {
@@ -228,7 +284,7 @@ export const VideoCall = forwardRef((
                                 <CallOptionIcon icon={faVideoSlash} callback={toggleVideo} />
                                 <CallOptionIcon icon={faDisplay} callback={() => {}} />
                                 <CallOptionIcon icon={faMicrophone} callback={() => {}} />
-                                <CallOptionIcon icon={faPhone} callback={onClose} />
+                                <CallOptionIcon icon={faPhone} callback={endCall} />
                             </div>
                         </div>
                     </div>
@@ -250,7 +306,7 @@ export const VideoCall = forwardRef((
                             <CallOptionIcon icon={faVideoSlash} callback={toggleVideo} />
                             <CallOptionIcon icon={faDisplay} callback={() => {}} />
                             <CallOptionIcon icon={faMicrophone} callback={() => {}} />
-                            <CallOptionIcon icon={faPhone} callback={onClose} />
+                            <CallOptionIcon icon={faPhone} callback={endCall} />
                         </div>
                     </div>
                 </div>

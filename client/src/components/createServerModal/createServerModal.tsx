@@ -14,7 +14,7 @@ export default function CreateServerModal(
     const handleCreateServer = async (event: React.MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
         try {
-            const response = await fetch("http://localhost:3000/createServer", {
+            const response = await fetch("https://discloned.up.railway.app/createServer", {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

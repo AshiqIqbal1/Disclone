@@ -21,7 +21,7 @@ export function SocketProvider({ token, children }: SocketProviderInput) {
     const navigate = useNavigate();
 
     useEffect(() => {
-        const newSocket = io('http://localhost:3000/', {
+        const newSocket = io('https://discloned.up.railway.app/', {
             auth: { token: token }
         });
 

@@ -43,7 +43,7 @@ export default function PendingFriendRequest() {
 
     const getFriendRequestList = async () => {
         try {
-            const response = await fetch("https://discloned.up.railway.app/friendList", {
+            const response = await fetch("http://localhost:3000/friendList", {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -76,7 +76,7 @@ export default function PendingFriendRequest() {
 
     const acceptFriendRequest = async (friendid: Types.ObjectId) => {
         try {
-            const response = await fetch("https://discloned.up.railway.app/acceptFriendRequest", {
+            const response = await fetch("http://localhost:3000/acceptFriendRequest", {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

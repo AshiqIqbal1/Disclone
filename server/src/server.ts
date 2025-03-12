@@ -74,9 +74,9 @@ io.on("connection", async (socket) => {
                 answererUserid: null,
                 answer: [],
                 answererIceCandiates: []
-
             })
-    
+            
+            console.log(recipient)
             socket.to(recipient).emit("newOfferAwaiting", offers.slice(-1));
         });
     

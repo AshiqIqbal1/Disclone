@@ -47,16 +47,16 @@ cd server
 npm install
 ```
 
-Open `src/config/dbConfig.ts` and set the connection string to your own database. Then:
+Copy `.env.example` to `.env`, set `MONGO_URI` to your database and `JWT_SECRET` to any long random string, then:
 
 ```
 npm run build
-npm start
+MONGO_URI=... JWT_SECRET=... npm start
 ```
 
 The API listens on port 3000. `npm run dev` runs the compiled output under nodemon instead.
 
-The JWT secret in `src/config/jwtConfig.ts` is generated fresh each time the process starts, so every restart logs everyone out. That is fine for development but you will want a fixed secret from an environment variable for anything real.
+If `JWT_SECRET` is not set the server generates a random one on each start, which logs everyone out on every restart.
 
 ### Client
 
